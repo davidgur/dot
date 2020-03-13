@@ -1,24 +1,27 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" vim-plug
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'git://git.wincent.com/command-t.git'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'itchyny/lightline.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'tpope/vim-endwise'
-Plugin 'dracula/vim'
-"Plugin 'Valloric/YouCompleteMe'
-call vundle#end()
-filetype plugin indent on
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-surround'
+Plug 'airblade/vim-gitgutter'
+Plug 'lervag/vimtex'
+Plug 'tpope/vim-endwise'
+Plug 'joshdick/onedark.vim'
+Plug 'sheerun/vim-polyglot'
+
+call plug#end()
 
 " ---- Rest of the vim stuff ----
 
@@ -37,6 +40,10 @@ endif
 
 " End Git project CtrlP stuff
 
+" Encoding
+set encoding=utf-8
+set fileencoding=utf-8
+
 " Clipboard
 set clipboard=unnamed
 
@@ -46,11 +53,12 @@ map <C-n> :NERDTreeToggle<CR>
 " Close everything if :q is called when NERDTree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" OneDark colorscheme
 syntax on
-"color dracula
+colorscheme onedark
 
-" YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/.ycm_extra_conf.py'
+" Compton / transparency
+hi Normal guibg=NONE ctermbg=NONE
 
 " Tabs --> 4 Spaces
 set tabstop=4
@@ -100,8 +108,8 @@ vmap <C-v> c<ESC>"+p
 imap <C-v> <ESC>"+pa
 
 
-map <Leader>6 :tabp<CR>
-map <Leader>8 :tabn<CR>
-map <Leader>7 :tabnew<CR>
+map <C-j> :tabp<CR>
+map <C-l> :tabn<CR>
+map <C-k> :tabnew<CR>
 
 
