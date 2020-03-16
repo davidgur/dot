@@ -1,0 +1,77 @@
+xerm*background: black
+xterm*foreground: lightgray
+
+! Perl
+URxvt.perl-lib: /usr/lib/urxvt/perl
+URxvt.perl-ext-common: default,resize-font,selection-to-clipboard,clipboard
+
+! special
+*.foreground:   #c5c8c6
+*.background:   #1d1f21
+*.cursorColor:  #c5c8c6
+
+! black
+*.color0:       #1d1f21
+*.color8:       #969896
+
+! red
+*.color1:       #cc342b
+*.color9:       #cc342b
+
+! green
+*.color2:       #198844
+*.color10:      #198844
+
+! yellow
+*.color3:       #fba922
+*.color11:      #fba922
+
+! blue
+*.color4:       #3971ed
+*.color12:      #3971ed
+
+! magenta
+*.color5:       #a36ac7
+*.color13:      #a36ac7
+
+! cyan
+*.color6:       #3971ed
+*.color14:      #3971ed
+
+! white
+*.color7:       #c5c8c6
+*.color15:      #ffffff
+
+URxvt.scrollBar:        false
+URxvt.saveLines:        10000
+URxvt.xftAntialias:     true
+URxvt.font:             xft:inconsolata:pixelsize=13:antialias=true:hinting=true 
+URxvt.boldFont:         xft:inconsolata:pixelsize=13:antialias=true:hinting=true
+URxvt.italicFont:       xft:inconsolata:pixelsize=13:antialias=true:hinting=true
+URxvt.bolditalicFont:   xft:inconsolata:pixelsize=13:antialias=true:hinting=true
+URxvt.letterspace:      1
+
+! Transparency
+urxvt*inheritPixmap:    true
+urxvt*transparent:      true
+urxvt*shading:          50
+urxvt*blurRadius:       20
+
+! Font size
+URxvt.iso14755:         false
+URxvt.iso14755_52:      false
+
+!! Common Keybinds for Navigations
+URxvt.keysym.Shift-Up: command:\033]720;1\007
+URxvt.keysym.Shift-Down: command:\033]721;1\007
+URxvt.keysym.Control-Up: \033[1;5A
+URxvt.keysym.Control-Down: \033[1;5B
+URxvt.keysym.Control-Right: \033[1;5C
+URxvt.keysym.Control-Left: \033[1;5D
+
+URxvt.keysym.Control-Shift-C: perl:clipboard:copy
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+
+URxvt.urlLauncher: firefox
+URxvt.underlineURLs: true
+URxvt.urlButton: 1
