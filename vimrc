@@ -11,15 +11,18 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdtree'
-Plug 'itchyny/lightline.vim'
-Plug 'tpope/vim-surround'
-Plug 'airblade/vim-gitgutter'
-Plug 'lervag/vimtex'
-Plug 'tpope/vim-endwise'
-Plug 'joshdick/onedark.vim'
-Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-fugitive'       " Git
+Plug 'scrooloose/nerdtree'      " NerdTree
+Plug 'itchyny/lightline.vim'    " Cool bar
+Plug 'tpope/vim-surround'       " () {} []
+Plug 'airblade/vim-gitgutter'   " More git
+Plug 'lervag/vimtex'            " LaTeX integration
+Plug 'tpope/vim-endwise'        " Automatically end control-flow statements
+Plug 'morhetz/gruvbox'          " Ugly color scheme
+Plug 'vim-python/python-syntax' " Python syntax highlighting
+Plug 'junegunn/goyo.vim'        " Writing longform
+Plug 'mbbill/undotree'          " UndoTree
+Plug 'jeaye/color_coded'        " C/C++ syntax highlighting
 
 call plug#end()
 
@@ -37,8 +40,36 @@ else
     \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
     \ }
 endif
-
 " End Git project CtrlP stuff
+
+" Ensure :q to quit even whe Goyo is active
+function! s:goyo_enter()
+    let b:quitting = 0
+    let b:quitting_bang = 0
+    autocmd QuitPre <buffer> let b:quitting = 1
+    cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+endfunction
+
+function! s:goyo_leave()
+    " Quit vim if this is the only remaining buffer
+    if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+        if b:quitting_bang
+            qa!
+        else
+            qa
+        endif
+    endif
+endfunction
+
+autocmd! User GoyoEnter call <SID>goyo_enter()
+autocmd! User GoyoLeave call <SID>goyo_leave()
+
+" vimtex
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 " Encoding
 set encoding=utf-8
@@ -53,9 +84,13 @@ map <C-n> :NERDTreeToggle<CR>
 " Close everything if :q is called when NERDTree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" OneDark colorscheme
+" colorscheme
 syntax on
-colorscheme onedark
+let g:gruvbox_italic=1
+colorscheme gruvbox
+set background=dark
+let python_highlight_all=1
+
 
 " Compton / transparency
 hi Normal guibg=NONE ctermbg=NONE
@@ -71,6 +106,8 @@ set number
 " Something to do with lightline
 set laststatus=2
 
+" No more bells
+set belloff=all
 " Use I block
 if has("autocmd")
   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
@@ -92,6 +129,8 @@ nnoremap <Leader>q :q<CR>
 nnoremap <Leader>O :CtrlP<CR>
 nnoremap <Leader>W :w<CR>
 nnoremap <Leader>Q :q<CR>
+nnoremap <Leader>u :UndotreeToggle<CR>
+nnoremap <Leader>U :UndotreeToggle<CR>
 
 imap <C-Space> <Esc>
 
@@ -112,4 +151,4 @@ map <C-j> :tabp<CR>
 map <C-l> :tabn<CR>
 map <C-k> :tabnew<CR>
 
-
+map <silent><F11> :Goyo<CR>:set linebreak<CR>:set wrap<CR> :setlocal spell! spelllang=en_gb<CR>
