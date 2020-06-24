@@ -1,8 +1,7 @@
 set nocompatible
-filetype off
+filetype plugin on
 
 " vim-plug
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -10,37 +9,22 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-
-Plug 'tpope/vim-fugitive'       " Git
+    
+Plug 'tpope/vim-endwise'        " Automatically end control flow
 Plug 'scrooloose/nerdtree'      " NerdTree
 Plug 'itchyny/lightline.vim'    " Cool bar
 Plug 'tpope/vim-surround'       " () {} []
-Plug 'airblade/vim-gitgutter'   " More git
 Plug 'lervag/vimtex'            " LaTeX integration
-Plug 'tpope/vim-endwise'        " Automatically end control-flow statements
 Plug 'morhetz/gruvbox'          " Ugly color scheme
-Plug 'vim-python/python-syntax' " Python syntax highlighting
 Plug 'junegunn/goyo.vim'        " Writing longform
-Plug 'mbbill/undotree'          " UndoTree
-Plug 'jeaye/color_coded'        " C/C++ syntax highlighting
+Plug 'neoclide/coc.nvim' , {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'vimwiki/vimwiki'
 
 call plug#end()
 
 " ---- Rest of the vim stuff ----
-
-" Git project CtrlP stuff
-let g:ctrlp_use_caching = 0
-if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
-
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-else
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-  let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
-    \ }
-endif
-" End Git project CtrlP stuff
 
 " Ensure :q to quit even whe Goyo is active
 function! s:goyo_enter()
@@ -84,13 +68,31 @@ map <C-n> :NERDTreeToggle<CR>
 " Close everything if :q is called when NERDTree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" coc
+" -- Always show sign column
+if has("patch-8.1.1564")
+    set signcolumn=number
+else
+    set signcolumn=yes
+endif
+
+" -- Tab for completion
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
 " colorscheme
-syntax on
 let g:gruvbox_italic=1
 colorscheme gruvbox
 set background=dark
-let python_highlight_all=1
-
+syntax on
 
 " Compton / transparency
 hi Normal guibg=NONE ctermbg=NONE
@@ -100,14 +102,21 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" Show line numbers
-set number
+" Show line numbers (hybrid mode)
+set number relativenumber
+
+augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 
 " Something to do with lightline
 set laststatus=2
 
 " No more bells
 set belloff=all
+
 " Use I block
 if has("autocmd")
   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
@@ -121,16 +130,14 @@ if has("autocmd")
 endif
 
 " Keymaps
-let mapleader = "\<Space>"
-
-nnoremap <Leader>o :CtrlP<CR>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
-nnoremap <Leader>O :CtrlP<CR>
-nnoremap <Leader>W :w<CR>
-nnoremap <Leader>Q :q<CR>
-nnoremap <Leader>u :UndotreeToggle<CR>
-nnoremap <Leader>U :UndotreeToggle<CR>
+nnoremap <Leader>W :wq<CR>
+nnoremap <Leader>Q :q!<CR>
+nnoremap <C-p> :Files<CR>
+
+nmap <Leader>gd <Plug>(coc-definition)
+nmap <Leader>gr <Plug>(coc-references)
 
 imap <C-Space> <Esc>
 
@@ -140,12 +147,6 @@ nmap <Leader>p "+p
 nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
-
-vmap <C-c> "+yi
-vmap <C-x> "+c
-vmap <C-v> c<ESC>"+p
-imap <C-v> <ESC>"+pa
-
 
 map <C-j> :tabp<CR>
 map <C-l> :tabn<CR>
