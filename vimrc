@@ -139,6 +139,8 @@ nnoremap <C-p> :Files<CR>
 nmap <Leader>gd <Plug>(coc-definition)
 nmap <Leader>gr <Plug>(coc-references)
 
+nmap <Leader>wt :call setline(".", getline(".") . strftime("%F"))<CR>$
+
 imap <C-Space> <Esc>
 
 vmap <Leader>y "+y
