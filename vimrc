@@ -9,18 +9,18 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-    
+
 Plug 'tpope/vim-endwise'        " Automatically end control flow
 Plug 'scrooloose/nerdtree'      " NerdTree
-Plug 'itchyny/lightline.vim'    " Cool bar
+Plug 'vim-airline/vim-airline'  " Cool bar
 Plug 'tpope/vim-surround'       " () {} []
 Plug 'lervag/vimtex'            " LaTeX integration
 Plug 'morhetz/gruvbox'          " Ugly color scheme
 Plug 'junegunn/goyo.vim'        " Writing longform
 Plug 'neoclide/coc.nvim' , {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'vimwiki/vimwiki'
+Plug 'junegunn/fzf.vim'         " File searching
+Plug 'vimwiki/vimwiki'          " Wiki Organization for notes
 
 call plug#end()
 
@@ -111,8 +111,10 @@ augroup numbertoggle
     autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
-" Something to do with lightline
+" Airline
 set laststatus=2
+let g:airline_detect_modified=1
+"let g:airline_symbols_ascii=1
 
 " No more bells
 set belloff=all
@@ -121,7 +123,7 @@ set belloff=all
 if has("autocmd")
   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
   au InsertEnter,InsertChange *
-    \ if v:insertmode == 'i' | 
+    \ if v:insertmode == 'i' |
     \   silent execute '!echo -ne "\e[5 q"' | redraw! |
     \ elseif v:insertmode == 'r' |
     \   silent execute '!echo -ne "\e[3 q"' | redraw! |
