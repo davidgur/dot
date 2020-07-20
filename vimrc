@@ -102,6 +102,9 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" Always split to the right side of the screen
+set splitright
+
 " Show line numbers (hybrid mode)
 set number relativenumber
 
@@ -142,6 +145,8 @@ nmap <Leader>gd <Plug>(coc-definition)
 nmap <Leader>gr <Plug>(coc-references)
 
 nmap <Leader>wt :call setline(".", getline(".") . strftime("%F"))<CR>$
+
+nmap <Leader>t :vertical term <CR><C-w>w :execute "vertical resize". string(&columns * 0.75)<CR><C-w>w
 
 imap <C-Space> <Esc>
 
