@@ -68,6 +68,16 @@ map <C-n> :NERDTreeToggle<CR>
 " Close everything if :q is called when NERDTree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" Function to strip trailing whitespace
+function! StripTrailingWhitespace()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfunction
+
+autocmd BufWritePre * :call StripTrailingWhitespace()
+
 " coc
 " -- Always show sign column
 if has("patch-8.1.1564")
@@ -100,10 +110,15 @@ hi Normal guibg=NONE ctermbg=NONE
 " Tabs --> 4 Spaces
 set tabstop=4
 set shiftwidth=4
+set smarttab
 set expandtab
+set shiftround
 
 " Always split to the right side of the screen
 set splitright
+
+" Performance
+set lazyredraw
 
 " Show line numbers (hybrid mode)
 set number relativenumber
@@ -117,22 +132,9 @@ augroup END
 " Airline
 set laststatus=2
 let g:airline_detect_modified=1
-"let g:airline_symbols_ascii=1
 
 " No more bells
 set belloff=all
-
-" Use I block
-if has("autocmd")
-  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[1 q"' | redraw!
-  au InsertEnter,InsertChange *
-    \ if v:insertmode == 'i' |
-    \   silent execute '!echo -ne "\e[5 q"' | redraw! |
-    \ elseif v:insertmode == 'r' |
-    \   silent execute '!echo -ne "\e[3 q"' | redraw! |
-    \ endif
-  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
-endif
 
 " Keymaps
 nnoremap <Leader>w :w<CR>
@@ -146,7 +148,7 @@ nmap <Leader>gr <Plug>(coc-references)
 
 nmap <Leader>wt :call setline(".", getline(".") . strftime("%F"))<CR>$
 
-nmap <Leader>t :vertical term <CR><C-w>w :execute "vertical resize". string(&columns * 0.75)<CR><C-w>w
+nmap <Leader>t :vertical term <CR><C-w>w :execute "vertical resize" . string(&columns * 0.75)<CR><C-w>w
 
 imap <C-Space> <Esc>
 
