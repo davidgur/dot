@@ -40,6 +40,12 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
+# Completion menu
+autoload -Uz compinit
+compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu select
+
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -56,6 +62,8 @@ function files() {
 }
 
 alias mail="neomutt"
+alias nvim="vim"
+alias notes="vim +VimwikiIndex"
 
 export EDITOR=nvim
 # >>> conda initialize >>>
@@ -78,5 +86,4 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 source /home/david/sources/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /home/david/sources/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /home/david/sources/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh

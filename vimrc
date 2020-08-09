@@ -55,6 +55,9 @@ let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
 
+" vimwiki
+let g:vimwiki_list = [{'path':'~/Documents/school/waterloo', 'path_html':'~/Documents/school/waterloo/export'}]
+
 " Encoding
 set encoding=utf-8
 set fileencoding=utf-8
@@ -132,6 +135,7 @@ augroup END
 " Airline
 set laststatus=2
 let g:airline_detect_modified=1
+let g:airline_powerline_fonts=1
 
 " No more bells
 set belloff=all
