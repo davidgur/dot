@@ -14,8 +14,10 @@ Plug 'tpope/vim-endwise'        " Automatically end control flow
 Plug 'scrooloose/nerdtree'      " NerdTree
 Plug 'vim-airline/vim-airline'  " Cool bar
 Plug 'tpope/vim-surround'       " () {} []
+Plug 'tpope/vim-fugitive'       " Git integration
 Plug 'lervag/vimtex'            " LaTeX integration
 Plug 'morhetz/gruvbox'          " Ugly color scheme
+Plug 'joshdick/onedark.vim'     " Less ugly color scheme
 Plug 'junegunn/goyo.vim'        " Writing longform
 Plug 'neoclide/coc.nvim' , {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -100,7 +102,8 @@ endfunction
 
 " colorscheme
 let g:gruvbox_italic=1
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme onedark
 set background=dark
 syntax on
 
