@@ -16,6 +16,21 @@ set number
 set belloff=all
 set mouse=a
 set hidden
+set ignorecase
+set smartcase
+set undofile
+set termguicolors
+set background=dark
+set cursorline
+
+highlight clear Pmenu
+highlight Pmenu cterm=inverse
+highlight clear PmenuSel
+
+" ========================================================
+" Remove trailing whitespace
+" ========================================================
+autocmd BufWritePre * :%s/\s\+$//e
 
 " ========================================================
 " vimplug
@@ -28,19 +43,27 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'tpope/vim-sensible'                                " Sensible defaults
-Plug 'tpope/vim-endwise' 				                 " Auto end control flow
-Plug 'tpope/vim-commentary'                              " Comments!
-Plug 'scrooloose/nerdtree'                               " NerdTree
-Plug 'vim-airline/vim-airline'                           " Cool bar
-Plug 'tpope/vim-surround'                                " () {} []
-Plug 'tpope/vim-fugitive'                                " Git integration
-Plug 'lervag/vimtex'                                     " LaTeX integration
-Plug 'neoclide/coc.nvim', {'branch': 'release'}          " Nice coc, bro
+Plug 'airblade/vim-gitgutter'                            " Git gutter
+Plug 'github/copilot.vim'                                " Github Copilot
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }      " File searching
 Plug 'junegunn/fzf.vim'                                  " |
-Plug 'anufrievroman/vim-angry-reviewer'                  " Angry reviewer
-Plug 'github/copilot.vim'                                " Github Copilot
+Plug 'junegunn/gv.vim'					 " Git commit browser
+Plug 'lervag/vimtex'					 " LaTeX support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}          " Nice coc, bro
+Plug 'rust-lang/rust.vim'                                " Rust
+Plug 'tpope/vim-commentary'                              " Comments!
+Plug 'tpope/vim-endwise' 				 " Auto end control flow
+Plug 'tpope/vim-fugitive'                                " Git integration
+Plug 'tpope/vim-sensible'                                " Sensible defaults
+Plug 'tpope/vim-sleuth'                                  " Detect indent settings
+Plug 'tpope/vim-surround'                                " () {} []
+Plug 'vim-airline/vim-airline'                           " Cool bar
+Plug 'nvim-lua/plenary.nvim'				 " Plenary
+Plug 'nvim-tree/nvim-web-devicons'			 " Icons
+Plug 'MunifTanjim/nui.nvim'				 " Nui
+Plug 'nvim-neo-tree/neo-tree.nvim'			 " Neo tree
+Plug 'lukas-reineke/indent-blankline.nvim'		 " Indent lines
+Plug 'antoinemadec/coc-fzf'
 
 call plug#end()
 
@@ -51,19 +74,13 @@ let g:tex_flavor='latex'
 let g:vimtex_quickfix_mode=0
 
 " ========================================================
-" NERDTree
-" ========================================================
-" Map Ctrl N to NERDTree
-map <C-n> :NERDTreeToggle<CR>
-
-" Close everything if :q is called when NERDTree is open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" ========================================================
 " CoC
 " ========================================================
-nmap <Leader>gd <Plug>(coc-definition)
-nmap <Leader>gr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <F2> <Plug>(coc-rename)
 
 inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
@@ -92,20 +109,18 @@ let g:airline#extensions#tabline#left_sep=' '
 let g:airline#extensions#tabline#left_alt_sep='|'
 
 " ========================================================
-" Angry Reviewer
-" ========================================================
-let g:AngryReviewerEnglish = 'british'
-
-" ========================================================
 " Keymaps
 " ========================================================
 nmap <Leader>wt :call setline(".", getline(".") . strftime("%F"))<CR>$
+nmap gs :CocFzfList symbols<CR>
+nmap ge :CocFzfList diagnostics<CR>
 
 nnoremap <C-p> :Files<CR>
 nnoremap <silent> <C-b> :Buffers<CR>
+nnoremap <C-f> :Rg<CR>
 
 map <C-j> :tabp<CR>
 map <C-l> :tabn<CR>
 map <C-k> :tabnew<CR>
 
-nnoremap <Leader>ar :AngryReviewer<CR>
+map <C-n> :Neotree toggle<CR>
