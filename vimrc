@@ -21,7 +21,6 @@ set smartcase
 set undofile
 set termguicolors
 set background=dark
-set cursorline
 
 highlight clear Pmenu
 highlight Pmenu cterm=inverse
@@ -62,8 +61,8 @@ Plug 'nvim-lua/plenary.nvim'				 " Plenary
 Plug 'nvim-tree/nvim-web-devicons'			 " Icons
 Plug 'MunifTanjim/nui.nvim'				 " Nui
 Plug 'nvim-neo-tree/neo-tree.nvim'			 " Neo tree
-Plug 'lukas-reineke/indent-blankline.nvim'		 " Indent lines
-Plug 'antoinemadec/coc-fzf'
+" Plug 'lukas-reineke/indent-blankline.nvim'		 " Indent lines
+Plug 'antoinemadec/coc-fzf'                              " Fzf Integration for Coc
 
 call plug#end()
 
